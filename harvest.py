@@ -19,8 +19,7 @@ class MelonType:
 
     def __repr__(self):
 
-        return f"<melon name: {self.name}, color: {self.color}, is_seedless: {self.is_seedless}>"
-                 
+        return f"< [Suelen, I'm pringing, yay!] melon name: {self.name}, color: {self.color}, is_seedless: {self.is_seedless}>"                 
 
         
     def add_pairing(self, pairing):
@@ -112,7 +111,7 @@ class Melon:
 
     def __repr__(self): 
 
-        return f"< - Melon type: {self.melon_type} \n - Shape rating: {self.shape_rating} \n - Color rating: {self.color_rating} \n - Havested from: {self.field} \n - Havested by: {self.harvested_by}"   
+        return f"< - Melon type: ***{self.melon_type}*** \n - Shape rating: {self.shape_rating} \n - Color rating: {self.color_rating} \n - Havested from: {self.field} \n - Havested by: {self.harvested_by}"   
 
 
     def is_sellable(self):
@@ -157,8 +156,8 @@ def make_melons(melon_types):
 
     return melons  
 
-melon_types = make_melon_types()  
-print(make_melons(melon_types))
+# melon_types = make_melon_types()  
+# print(make_melons(melon_types))
 
 
 
@@ -172,5 +171,38 @@ def get_sellability_report(melons):
             print(f"Havested by {melon.harvested_by} from field {melon.field} (NOT SELLABLE)")    
     
 
-melons = make_melons(melon_types)
-print(get_sellability_report(melons))
+# melons = make_melons(melon_types)
+# print(get_sellability_report(melons))
+
+
+
+
+def create_objects(file):
+    """Creating a melon object for each melon in the file"""
+
+    melons = []
+
+    melon_types = make_melon_types()      
+    melon_types_dict = make_melon_type_lookup(melon_types)  
+    
+    with open("harvest_log.txt") as file:        
+        file_content = file.readlines()        
+
+        for line in file_content:
+            melon = line.rstrip().split(" ")
+
+            melon_type_code = melon[5] 
+            melon_type_instance = melon_types_dict[melon_type_code]
+
+            shape_rating = melon[1] 
+            color_rating = melon[3] 
+            field = melon[-1] 
+            harvested_by = melon[8]            
+
+            melon_obj = Melon(melon_type_instance, shape_rating, color_rating, field, harvested_by)
+            melons.append(melon_obj)
+
+    return melons 
+
+result = create_objects("harvest_log.txt")
+print(result)
